@@ -27,8 +27,24 @@ class MainActivity : AppCompatActivity() {
         val adapter = MyPagerAdapter(supportFragmentManager)
         binding.content.tabs.setupWithViewPager(binding.content.pager)
         binding.content.pager.adapter = adapter
-        binding.content.pager.setPageTransformer(true,ZoomOutPageTransformer())
+        binding.content.pager.setPageTransformer(true, ZoomOutPageTransformer())
         binding.content.pager.currentItem = 1 // this is optional
+        binding.content.btnNext.setOnClickListener {
+            if (binding.content.pager.currentItem < 2) {
+                binding.content.pager.currentItem += 1
+            }
+        }
+        binding.content.btnPrev.setOnClickListener {
+            if (binding.content.pager.currentItem > 0) {
+                binding.content.pager.currentItem -= 1
+            }
+        }
+        if (binding.content.pager.currentItem == 0) {
+            binding.content.btnPrev.visibility = View.GONE
+        }
+        if (binding.content.pager.currentItem == 2) {
+            binding.content.btnNext.text = "Finish"
+        }
     }
 
     class MyPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
@@ -45,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun getPageTitle(position: Int): CharSequence? {
-            return when (position){
+            return when (position) {
                 0 -> "One"
                 1 -> "Two"
                 else -> "Three"
@@ -66,7 +82,6 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
 
 
     class ZoomOutPageTransformer : ViewPager.PageTransformer {
